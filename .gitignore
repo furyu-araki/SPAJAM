@@ -8,3 +8,6 @@ gradle.properties
 /captures
 openCVLibrary310/build
 openCVSamplefacedetection/build
+openCVSamplefacedetection/src/main/jniLibs
+openCVSamplefacedetection/src/main/libs
+openCVSamplefacedetection/src/main/obj
