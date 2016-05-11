@@ -8,10 +8,6 @@ android {
         applicationId "org.opencv.samples.facedetect"
         minSdkVersion 15
         targetSdkVersion 22
-
-        ndk {
-            moduleName "detection_based_tracker"
-        }
     }
 
     sourceSets.main {
