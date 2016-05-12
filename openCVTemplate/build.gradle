@@ -29,6 +29,10 @@ android {
                 '-C', file('src/main/jni').absolutePath,
                 '-j', Runtime.runtime.availableProcessors(),
                 'all'
+
+        commandLine "cp",
+                file('src/main/opencvLib/armeabi-v7a/libopencv_java3.so').absolutePath,
+                file('src/main/libs/armeabi-v7a/libopencv_java3.so').absolutePath
     }
 
     tasks.withType(JavaCompile) {
