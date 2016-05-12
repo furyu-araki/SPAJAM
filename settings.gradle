@@ -1,2 +1,2 @@
 include ':openCVLibrary310'
-include ':openCVSamplefacedetection'
+include ':openCVTemplate'

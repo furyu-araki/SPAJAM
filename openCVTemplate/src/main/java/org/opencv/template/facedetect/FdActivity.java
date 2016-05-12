@@ -1,4 +1,4 @@
-package org.opencv.samples.facedetect;
+package org.opencv.template.facedetect;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,7 +9,6 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -19,6 +18,7 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.template.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -47,7 +47,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private CascadeClassifier      mJavaDetector;
     private DetectionBasedTracker  mNativeDetector;
 
-    private int                    mDetectorType       = JAVA_DETECTOR;
+    private int                    mDetectorType       = NATIVE_DETECTOR;
     private String[]               mDetectorName;
 
     private float                  mRelativeFaceSize   = 0.2f;
