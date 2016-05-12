@@ -8,7 +8,7 @@ http://opencv.org/downloads.html
 
 から、OpenCV for Android をダウンロードしてください。バージョン3.1で動作確認済みです。
 
-### Android.mkを修正
+### `local.properties`を修正
 
 `local.properties`ファイルに、以下の行を追加してください。
 
