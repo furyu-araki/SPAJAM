@@ -17,7 +17,15 @@ android {
 
     task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
         def ndkDir = android.ndkDirectory
+
+        // reading 'local.properties' to get openCV sdk directory path.
+        // you must add line 'opencv.sdk.dir=<Your OpenCV SDK Directory>' to 'local.properties'.
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def openCVSdkDir = properties.getProperty('opencv.sdk.dir')
+
         commandLine "$ndkDir/ndk-build",
+                "OPENCV_ANDROID_SDK=$openCVSdkDir",
                 '-C', file('src/main/jni').absolutePath,
                 '-j', Runtime.runtime.availableProcessors(),
                 'all'

@@ -12,8 +12,8 @@ ifdef OPENCV_ANDROID_SDK
     include ${OPENCV_ANDROID_SDK}/sdk/native/jni/OpenCV.mk
   endif
 else
-  # 自分の環境に合うように書き換えてください。
-  include /Users/arakitaku/Library/Android/OpenCV-3.1.0-android-sdk/sdk/native/jni/OpenCV.mk
+  # not necessary if you properly set 'local.properties'
+  include <Your OpenCV SDK Directory>/sdk/native/jni/OpenCV.mk
 endif
 
 LOCAL_SRC_FILES  := DetectionBasedTracker_jni.cpp

@@ -10,10 +10,10 @@ http://opencv.org/downloads.html
 
 ### Android.mkを修正
 
-`openCVTemplate/src/main/jni/Android.mk`の
+`local.properties`ファイルに、以下の行を追加してください。
 
 ```
-include /Users/arakitaku/Library/Android/OpenCV-3.1.0-android-sdk/sdk/native/jni/OpenCV.mk
+opencv.sdk.dir=<Your OpenCV SDK Directory>
 ```
 
-を自分の環境に合うように変更してください。
+`<Your OpenCV SDK Directory>`には、ダウンロードしてきた OpenCV for Android のパスを記述してください。私の場合は、`/Users/arakitaku/Library/Android/OpenCV-3.1.0-android-sdk`と記述しました。
