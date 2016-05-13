@@ -15,7 +15,17 @@ using namespace cv;
 
 
 JNIEXPORT void JNICALL Java_org_opencv_template_convert_ImageConverter_nativeConvert
-(JNIEnv * jenv, jclass, jlong imageGray)
+(JNIEnv * jenv, jclass, jlong imagePtr)
 {
     LOGD("Java_org_opencv_template_convert_ImageConverter_nativeConvert");
+
+    try
+    {
+        cv::Mat image = *((Mat*)imagePtr);
+    }
+    catch (...)
+    {
+        LOGD("nativeConvert caught unknown exception");
+    }
+
 }
