@@ -1,25 +1,4 @@
-package org.opencv.template.facedetect;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.template.R;
-import org.opencv.template.convert.ImageConverter;
+package org.opencv.template.convert;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,7 +8,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-public class FdActivity extends Activity implements CvCameraViewListener2 {
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.template.R;
+import org.opencv.template.facedetect.DetectionBasedTracker;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class ImageConvertActivity extends Activity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "OCVSample::Activity";
     private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
@@ -109,7 +109,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
     };
 
-    public FdActivity() {
+    public ImageConvertActivity() {
         mDetectorName = new String[2];
         mDetectorName[JAVA_DETECTOR] = "Java";
         mDetectorName[NATIVE_DETECTOR] = "Native (tracking)";
@@ -194,6 +194,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         else {
             Log.e(TAG, "Detection method is not selected!");
         }
+
+        ImageConverter.convert(mRgba);
 
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
