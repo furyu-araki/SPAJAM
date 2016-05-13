@@ -1,5 +1,5 @@
-# opencv-template
-AndroidでOpenCVを使うためのテンプレートです。
+# SPAJAM
+SPAJAM用のリポジトリ
 
 ## ビルドを通すには
 
