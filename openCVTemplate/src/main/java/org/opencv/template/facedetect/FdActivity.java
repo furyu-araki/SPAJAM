@@ -19,6 +19,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.template.R;
+import org.opencv.template.convert.ImageConverter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -65,6 +66,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
                     // Load native library after(!) OpenCV initialization
                     System.loadLibrary("detection_based_tracker");
+                    System.loadLibrary("image_converter");
 
                     try {
                         // load cascade file from application resources
@@ -192,6 +194,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         else {
             Log.e(TAG, "Detection method is not selected!");
         }
+
+        ImageConverter.convert(mRgba);
 
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
