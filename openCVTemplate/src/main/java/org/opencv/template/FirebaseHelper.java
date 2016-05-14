@@ -30,6 +30,7 @@ public class FirebaseHelper implements ChildEventListener {
     public FirebaseHelper(Context context, OnNextDeviceBroadcastReceiver receiver) {
         Firebase.setAndroidContext(context);
         firebase = new Firebase("https://torrid-torch-6405.firebaseio.com/").child(PATH_MESSAGE);
+        firebase.addChildEventListener(this);
         this.receiver = receiver;
     }
 
