@@ -113,7 +113,7 @@ public class NetworkConnectionModel {
 
                     inputStream = getInputStream(url);
                     byte[] data = ResourceLoaderUtils.getBytesFromInputStream(inputStream);
-                    fileOutputStream = new FileOutputStream(application.DIRECTORY + "/" + imageNum + "jpg");
+                    fileOutputStream = new FileOutputStream(application.DIRECTORY + "/" + imageNum + ".jpg");
                     fileOutputStream.write(data);
 
                     subscriber.onNext(true);
