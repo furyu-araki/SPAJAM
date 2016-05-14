@@ -4,25 +4,22 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 
 import org.opencv.template.Constants;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -56,9 +53,28 @@ public class NetworkConnectionModel {
             public void call(Subscriber<? super Boolean> subscriber) {
                 try {
                     s3Client.createBucket(Constants.getPictureBucket());
-                    PutObjectRequest por = new PutObjectRequest( Constants.getPictureBucket(), "image0.jpg", new File(DIRECTORY + "/image0.jpg"));
+                    PutObjectRequest por = new PutObjectRequest(Constants.getPictureBucket(), "image0.jpg", new File(DIRECTORY + "/image0.jpg"));
                     s3Client.putObject(por);
                     subscriber.onNext(true);
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
+    }
+
+    public Observable<String> downloadImage() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    ResponseHeaderOverrides override = new ResponseHeaderOverrides();
+                    override.setContentType("image/jpeg");
+                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), "image0.jpg");
+                    urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
+                    urlRequest.setResponseHeaders(override);
+                    URL url = s3Client.generatePresignedUrl(urlRequest);
+                    subscriber.onNext(url.toString());
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }

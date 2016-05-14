@@ -3,6 +3,7 @@ package org.opencv.template;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import org.opencv.template.model.NetworkConnectionModel;
 
@@ -40,6 +41,26 @@ public class NetworkConnectionActivity extends Activity {
                         Log.e(TAG, "upload error: ", throwable);
                     }
                 });
+
+        findViewById(R.id.activity_network_connection_button_create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                networkConnectionModel.downloadImage()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<String>() {
+                            @Override
+                            public void call(String url) {
+                                Log.d(TAG, "download image url: " + url);
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Log.e(TAG, "download error: ", throwable);
+                            }
+                        });
+            }
+        });
     }
 
 }

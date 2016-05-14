@@ -3,4 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/activity_network_connection_button_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="アニメーション作成"/>
+
 </LinearLayout>
