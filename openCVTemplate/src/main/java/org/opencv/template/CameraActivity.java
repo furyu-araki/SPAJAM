@@ -183,6 +183,8 @@ public class CameraActivity extends Activity {
                     String fileName =  ta.getNumberOfMember() + ".jpg";
                     String savePath = directory + "/" + fileName;
 
+                    mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
+
                     ta.setPictureFileName(fileName);
 
                     mCameraView.savePreviewImage(savePath);
