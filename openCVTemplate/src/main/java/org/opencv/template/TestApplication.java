@@ -6,7 +6,9 @@ import android.util.Log;
 
 public class TestApplication extends Application {
     private final String TAG = "DEBUG-APPLICATION";
-    private Bitmap obj;
+
+    private int memberCount_;
+    private int numberOfMember_;
 
     @Override
     public void onCreate() {
@@ -20,11 +22,18 @@ public class TestApplication extends Application {
         Log.v(TAG,"--- onTerminate() in ---");
     }
 
-    public void setObj(Bitmap bmp){
-        obj = bmp;
+    public void setMemberCount(int memberCount)
+    {
+        memberCount_ = memberCount;
     }
 
-    public Bitmap getObj(){
-        return obj;
+    public int getMemberCount()
+    {
+        return memberCount_;
+    }
+
+    public void setNumberOfMember( int numberOfMember )
+    {
+        numberOfMember_ = numberOfMember;
     }
 }
