@@ -1,6 +1,7 @@
 package org.opencv.template.model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -11,10 +12,15 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Downloader;
 
 import org.opencv.template.Constants;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
@@ -34,7 +40,8 @@ public class NetworkConnectionModel {
 
     public static final String DIRECTORY = Environment.getExternalStorageDirectory() + "/spajam";
 
-    OkHttpClient client;
+    private OkHttpClient client;
+    private OkHttp3Downloader downloader;
 
     private AmazonS3Client s3Client;
 
@@ -43,6 +50,7 @@ public class NetworkConnectionModel {
         File file = new File(DIRECTORY);
         Log.d(TAG, "mkdir: " + file.mkdir());
         client = new OkHttpClient();
+        downloader = new OkHttp3Downloader(client);
         s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.ACCESS_KEY_ID, Constants.SECRET_KEY));
         s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
     }
@@ -63,10 +71,13 @@ public class NetworkConnectionModel {
         });
     }
 
-    public Observable<String> downloadImage() {
-        return Observable.create(new Observable.OnSubscribe<String>() {
+    public Observable<Boolean> downloadImage() {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
-            public void call(Subscriber<? super String> subscriber) {
+            public void call(Subscriber<? super Boolean> subscriber) {
+                InputStream inputStream = null;
+                FileOutputStream fileOutputStream = null;
+
                 try {
                     ResponseHeaderOverrides override = new ResponseHeaderOverrides();
                     override.setContentType("image/jpeg");
@@ -74,11 +85,44 @@ public class NetworkConnectionModel {
                     urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
                     urlRequest.setResponseHeaders(override);
                     URL url = s3Client.generatePresignedUrl(urlRequest);
-                    subscriber.onNext(url.toString());
+                    Log.d(TAG, "download image url: " + url);
+
+                    inputStream = getInputStream(url);
+                    byte[] data = ResourceLoaderUtils.getBytesFromInputStream(inputStream);
+                    fileOutputStream = new FileOutputStream(DIRECTORY + "/image_download0.jpg");
+                    fileOutputStream.write(data);
+
+                    subscriber.onNext(true);
+                    subscriber.onCompleted();
                 } catch (Exception e) {
                     subscriber.onError(e);
+                } finally {
+                    try {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        if (fileOutputStream != null) {
+                            fileOutputStream.close();
+                        }
+                    } catch (IOException e) {
+                        subscriber.onError(e);
+                    }
                 }
             }
         });
+    }
+
+
+
+    /**
+     * 画像データのInputStreamを返す。
+     *
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    private InputStream getInputStream(URL url) throws IOException {
+        Downloader.Response response = downloader.load(Uri.parse(url.toString()), 1);
+        return response.getInputStream();
     }
 }

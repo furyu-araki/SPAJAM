@@ -48,10 +48,10 @@ public class NetworkConnectionActivity extends Activity {
                 networkConnectionModel.downloadImage()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<String>() {
+                        .subscribe(new Action1<Boolean>() {
                             @Override
-                            public void call(String url) {
-                                Log.d(TAG, "download image url: " + url);
+                            public void call(Boolean success) {
+                                Log.d(TAG, "download success!!");
                             }
                         }, new Action1<Throwable>() {
                             @Override
