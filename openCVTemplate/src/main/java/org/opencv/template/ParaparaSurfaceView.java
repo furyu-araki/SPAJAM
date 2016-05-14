@@ -28,17 +28,21 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
 
     public ParaparaSurfaceView(Context context) {
         super(context);
+        mHolder = getHolder();
+        mHolder.addCallback(this);
 
-        File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/spajam");
-        if(dir.exists()){
-            String fileName = "/image_download";
+        File dir = new File(Environment.getExternalStorageDirectory().getPath());
+        if(dir.exists())
+        {
+            String fileName = "/";
 
-            for ( int i = 0; i < 100; i++ )
+            for ( int i = 1; i < 100; i++ )
             {
                 String imageFileName = fileName + i + ".jpg";
 
                 File file = new File(dir.getAbsolutePath() + imageFileName);
-                if (file.exists()) {
+                if (file.exists())
+                {
                     mImages.add(BitmapFactory.decodeFile(file.getPath()));
                 } else {
                     break;
@@ -55,28 +59,33 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
     //サーフェイス生成で実行される
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        mLooper = new Thread(this);
+        mLooper.start();
     }
 
     //サーフェイス破棄で実行される
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        mLooper = null;
     }
 
     public void run() {
         //描画処理
-        for (Bitmap i : mImages) {
+        while( mLooper != null ) {
+            for (Bitmap i : mImages) {
 
-            Canvas c = mHolder.lockCanvas();
+                Canvas c = mHolder.lockCanvas();
 
-            Paint paint = new Paint();
-            c.drawBitmap( i, 0, 0, paint);
+                Paint paint = new Paint();
+                c.drawBitmap(i, 0, 0, paint);
 
-            mHolder.unlockCanvasAndPost(c);
+                mHolder.unlockCanvasAndPost(c);
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
