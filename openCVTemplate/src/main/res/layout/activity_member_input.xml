@@ -3,4 +3,41 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <TextView android:id="@+id/textview"
+        android:textSize="30sp"
+        android:text="撮影台数を入れてください"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText android:id="@+id/edittext"
+        android:text="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Space android:layout_width="match_parent"
+        android:layout_height="25dip"/>
+
+    <TextView android:id="@+id/textview2"
+        android:textSize="30sp"
+        android:text="何番目の携帯ですか"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText android:id="@+id/edittext2"
+        android:text="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Space android:layout_width="match_parent"
+        android:layout_height="25dip"/>
+
+    <Button android:id="@+id/button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="次へ" />
+
+
 </LinearLayout>
