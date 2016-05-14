@@ -151,7 +151,25 @@ public class CameraActivity extends Activity {
                 Matrix m = new Matrix(); //Bitmapの回転用Matrix
                 m.setRotate(90-degrees);    // 向きが正しくなるように回転角度を補正
                 Bitmap original = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Bitmap rotated = Bitmap.createBitmap( original, 0, 0, original.getWidth(), original.getHeight(), m, true);
+                //サイズを小さくする
+                int w = 1000;
+                int h = 1000;
+                double aspectRatio = 1.0;
+                double originalW = original.getWidth();
+                double originalH = original.getHeight();
+                if( originalW < originalH)
+                {
+                    aspectRatio = originalH / originalW;
+                    h = (int)(aspectRatio * w);
+                }
+                else
+                {
+                    aspectRatio = originalW / originalH;
+                    w = (int)(aspectRatio * h);
+                }
+
+                Bitmap streched = Bitmap.createScaledBitmap(original, w, h, true );
+                Bitmap rotated = Bitmap.createBitmap( streched, 0, 0, streched.getWidth(), streched.getHeight(), m, true);
 
                 FileOutputStream fos = null;
                 try {
