@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/activity_network_connection_imageview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/holo_blue_light"/>
+        android:background="@android:color/holo_blue_light" />
 
     <Button
         android:id="@+id/activity_network_connection_button_create"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="アニメーション作成"/>
+        android:layout_gravity="bottom"
+        android:text="アニメーション作成"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/activity_network_connection_button_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="アニメーションを見る"
+        android:visibility="gone" />
+
+</FrameLayout>
