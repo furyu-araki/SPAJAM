@@ -53,12 +53,12 @@ public class CameraActivity extends Activity {
             @Override
             public void onNextDeviceBroadcastReceive(int num) {
                 // 自分の端末の番号なら、シャッターを切る
-                if( mMyNumber == num )
+                //if( mMyNumber == num )
                 {
                     if (mCamera != null) {
                         TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
                         int nextNum = mMyNumber + 1;
-                        mFirebaseHelper.broadcastNextDevice(nextNum);
+                        //mFirebaseHelper.broadcastNextDevice(nextNum);
 
                         // 撮影実行
                         mCamera.takePicture(shutterListener_, null, pictureListener_);
@@ -74,6 +74,15 @@ public class CameraActivity extends Activity {
         }
         FrameLayout preview = (FrameLayout)findViewById(R.id.CameraView);
         mCameraView = new CameraView(this, mCamera);
+
+        mCameraView.setPreviewSyncCallback(new DoSyncCameraPreview() {
+            @Override
+            public void onSaveFinished() {
+                //遷移
+                Intent intent = new Intent(CameraActivity.this, NetworkConnectionActivity.class);
+                startActivity(intent);
+            }
+        });
         ///preview.addView( mCameraView, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         //解像度からViewの表示サイズを設定する
@@ -103,8 +112,13 @@ public class CameraActivity extends Activity {
     protected void onPause()
     {
         super.onPause();
-        //mCamera.release();
-        //mCamera = null;
+        //入れるとおちてしまう。。。
+//        if(mCamera != null)
+//        {
+//            mCamera.stopPreview();
+//            mCamera.release();
+//            mCamera = null;
+//        }
     }
 
     // ディスプレイの向き設定
@@ -151,7 +165,18 @@ public class CameraActivity extends Activity {
                     mFirebaseHelper.broadcastNextDevice(nextNum);
 
                     // 撮影実行
-                    mCamera.takePicture(shutterListener_, null, pictureListener_);
+                    //mCamera.takePicture(shutterListener_, null, pictureListener_);
+
+                    //プレビュー画像を保存する場合
+                    String directory = Environment.getExternalStorageDirectory().getPath();
+
+                    String fileName =  ta.getNumberOfMember() + ".jpg";
+                    String savePath = directory + "/" + fileName;
+
+                    ta.setPictureFileName(fileName);
+
+                    mCameraView.savePreviewImage(savePath);
+
                 }
             }
             return false;
