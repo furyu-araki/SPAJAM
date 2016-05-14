@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.media.audiofx.EnvironmentalReverb;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,6 +40,10 @@ public class CameraActivity extends Activity {
     private FirebaseHelper mFirebaseHelper;
 
     private int mMyNumber;
+
+    // 音関係
+    private SoundPool mSoundPool;
+    private int mSoundId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,16 +115,20 @@ public class CameraActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // 音声データ読み込み
+        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mSoundId = mSoundPool.load(getApplicationContext(), R.raw.shutter, 0);
+    }
+
+    @Override
     protected void onPause()
     {
         super.onPause();
-        //入れるとおちてしまう。。。
-//        if(mCamera != null)
-//        {
-//            mCamera.stopPreview();
-//            mCamera.release();
-//            mCamera = null;
-//        }
+        mSoundPool.release();
+        //mCamera.release();
+        //mCamera = null;
     }
 
     // ディスプレイの向き設定
