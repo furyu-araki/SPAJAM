@@ -4,6 +4,17 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
+import org.opencv.template.Constants;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -28,11 +39,15 @@ public class NetworkConnectionModel {
 
     OkHttpClient client;
 
+    private AmazonS3Client s3Client;
 
-    public NetworkConnectionModel() {
+
+    public NetworkConnectionModel(Context context) {
         File file = new File(DIRECTORY);
         Log.d(TAG, "mkdir: " + file.mkdir());
         client = new OkHttpClient();
+        s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.ACCESS_KEY_ID, Constants.SECRET_KEY));
+        s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
     }
 
     public Observable<Boolean> uploadImage() {
@@ -40,15 +55,12 @@ public class NetworkConnectionModel {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 try {
-                    RequestBody body = RequestBody.create(JPEG, new File(DIRECTORY + "/image0.jpg"));
-                    Request request = new Request.Builder()
-                            .url("")
-                            .post(body)
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    subscriber.onNext(response.isSuccessful());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    s3Client.createBucket(Constants.getPictureBucket());
+                    PutObjectRequest por = new PutObjectRequest( Constants.getPictureBucket(), "image0.jpg", new File(DIRECTORY + "/image0.jpg"));
+                    s3Client.putObject(por);
+                    subscriber.onNext(true);
+                } catch (Exception e) {
+                    subscriber.onError(e);
                 }
             }
         });

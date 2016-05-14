@@ -25,7 +25,7 @@ public class NetworkConnectionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network_connection);
 
-        networkConnectionModel = new NetworkConnectionModel();
+        networkConnectionModel = new NetworkConnectionModel(getApplicationContext());
         networkConnectionModel.uploadImage()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
