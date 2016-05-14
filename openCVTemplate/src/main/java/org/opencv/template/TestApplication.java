@@ -39,6 +39,8 @@ public class TestApplication extends Application {
         numberOfMember_ = numberOfMember;
     }
 
+    public int getNumberOfMember(){ return numberOfMember_; }
+
     public void setPictureFileName( String pictureFileName ){ pictureFileName_ = pictureFileName; }
 
     public String getPictureFileName(){ return pictureFileName_; }
