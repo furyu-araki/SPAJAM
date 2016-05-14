@@ -56,6 +56,10 @@ public class CameraActivity extends Activity {
                 if( mMyNumber == num )
                 {
                     if (mCamera != null) {
+                        TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
+                        int nextNum = mMyNumber + 1;
+                        mFirebaseHelper.broadcastNextDevice(nextNum);
+
                         // 撮影実行
                         mCamera.takePicture(shutterListener_, null, pictureListener_);
                     }
@@ -142,6 +146,10 @@ public class CameraActivity extends Activity {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 if (mCamera != null && mMyNumber == 1 ) {
+                    TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
+                    int nextNum = mMyNumber + 1;
+                    mFirebaseHelper.broadcastNextDevice(nextNum);
+
                     // 撮影実行
                     mCamera.takePicture(shutterListener_, null, pictureListener_);
                 }
@@ -153,9 +161,6 @@ public class CameraActivity extends Activity {
     // シャッターが押されたときに呼ばれるコールバック
     private Camera.ShutterCallback shutterListener_ = new Camera.ShutterCallback() {
         public void onShutter() {
-            TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
-            int nextNum = mMyNumber + 1;
-            mFirebaseHelper.broadcastNextDevice(nextNum);
         }
     };
 
