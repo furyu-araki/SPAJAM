@@ -2,6 +2,9 @@ package org.opencv.template;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.media.audiofx.EnvironmentalReverb;
@@ -125,7 +128,6 @@ public class CameraActivity extends Activity {
     // シャッターが押されたときに呼ばれるコールバック
     private Camera.ShutterCallback shutterListener_ = new Camera.ShutterCallback() {
         public void onShutter() {
-            Log.d( getLocalClassName(), "shutterListner");
         }
     };
 
@@ -135,19 +137,38 @@ public class CameraActivity extends Activity {
         public void onPictureTaken(byte[] data, Camera camera) {
             // SDカードにJPEGデータを保存する
             if (data != null) {
+                int rotation = mOwenerActivity.getWindowManager().getDefaultDisplay().getRotation();
+                int degrees = 0; //端末の向き(度換算)
+                switch (rotation) {
+                    case Surface.ROTATION_0: degrees = 0; break;
+                    case Surface.ROTATION_90: degrees = 90; break;
+                    case Surface.ROTATION_180: degrees = 180; break;
+                    case Surface.ROTATION_270: degrees = 270; break;
+                }
+                Log.d( getLocalClassName(), "rotation" + rotation );
+                Matrix m = new Matrix(); //Bitmapの回転用Matrix
+                m.setRotate(90-degrees);    // 向きが正しくなるように回転角度を補正
+                Bitmap original = BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap rotated = Bitmap.createBitmap( original, 0, 0, original.getWidth(), original.getHeight(), m, true);
+
                 FileOutputStream fos = null;
                 try {
                     String directory = Environment.getExternalStorageDirectory().getPath();
                     TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
-                    String fileName = Environment.getExternalStorageDirectory().getPath()+ "/camera_test.jpg";
-                    fos = new FileOutputStream(fileName);
-                    fos.write(data);
+
+                    String fileName =  "/" + ta.getNumberOfMember() + ".jpg";
+                    String savePath = directory + fileName;
+                    fos = new FileOutputStream(savePath);
+                    rotated.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    //fos.write(data);
                     fos.close();
                     ta.setPictureFileName(fileName);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                original.recycle();
+                rotated.recycle();
 
                 camera.stopPreview();
 
