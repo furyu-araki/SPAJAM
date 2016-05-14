@@ -1,9 +1,11 @@
 package org.opencv.template;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import org.opencv.template.model.NetworkConnectionModel;
 
@@ -20,11 +22,15 @@ public class NetworkConnectionActivity extends Activity {
 
     NetworkConnectionModel networkConnectionModel;
 
+    Button createAnimationButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network_connection);
+
+        createAnimationButton = (Button) findViewById(R.id.activity_network_connection_button_create);
 
         networkConnectionModel = new NetworkConnectionModel(getApplicationContext());
         networkConnectionModel.uploadImage()
@@ -34,6 +40,7 @@ public class NetworkConnectionActivity extends Activity {
                     @Override
                     public void call(Boolean success) {
                         Log.d(TAG, "upload success: " + success);
+                        createAnimationButton.setVisibility(View.VISIBLE);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -42,7 +49,7 @@ public class NetworkConnectionActivity extends Activity {
                     }
                 });
 
-        findViewById(R.id.activity_network_connection_button_create).setOnClickListener(new View.OnClickListener() {
+        createAnimationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 networkConnectionModel.downloadImage()
@@ -52,6 +59,7 @@ public class NetworkConnectionActivity extends Activity {
                             @Override
                             public void call(Boolean success) {
                                 Log.d(TAG, "download success!!");
+                                startActivity(new Intent(NetworkConnectionActivity.this, ResultActivity.class));
                             }
                         }, new Action1<Throwable>() {
                             @Override
