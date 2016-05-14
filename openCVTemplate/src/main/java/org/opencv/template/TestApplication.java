@@ -10,6 +10,8 @@ public class TestApplication extends Application {
     private int memberCount_;
     private int numberOfMember_;
 
+    private String pictureFileName_;
+
     @Override
     public void onCreate() {
         /** Called when the Application-class is first created. */
@@ -36,4 +38,8 @@ public class TestApplication extends Application {
     {
         numberOfMember_ = numberOfMember;
     }
+
+    public void setPictureFileName( String pictureFileName ){ pictureFileName_ = pictureFileName; }
+
+    public String getPictureFileName(){ return pictureFileName_; }
 }
