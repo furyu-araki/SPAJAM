@@ -74,8 +74,11 @@ public class CameraActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
+        //mCamera.release();
+        //mCamera = null;
     }
 
     // ディスプレイの向き設定
@@ -145,7 +148,6 @@ public class CameraActivity extends Activity {
                     case Surface.ROTATION_180: degrees = 180; break;
                     case Surface.ROTATION_270: degrees = 270; break;
                 }
-                Log.d( getLocalClassName(), "rotation" + rotation );
                 Matrix m = new Matrix(); //Bitmapの回転用Matrix
                 m.setRotate(90-degrees);    // 向きが正しくなるように回転角度を補正
                 Bitmap original = BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -156,8 +158,9 @@ public class CameraActivity extends Activity {
                     String directory = Environment.getExternalStorageDirectory().getPath();
                     TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
 
-                    String fileName =  "/" + ta.getNumberOfMember() + ".jpg";
-                    String savePath = directory + fileName;
+                    String fileName =  ta.getNumberOfMember() + ".jpg";
+                    String savePath = directory + "/" + fileName;
+
                     fos = new FileOutputStream(savePath);
                     rotated.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                     //fos.write(data);

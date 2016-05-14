@@ -22,15 +22,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 
     private Camera mCam;
 
-    private byte[] mFrameBuffer;
-    private int[] mBitmapBuffer;
-
     private SurfaceHolder mHolder;
 
     private Bitmap mBitmap;
-
-    private static int PREVIEW_WIDTH = 640;
-    private static int PREVIEW_HEIGHT = 480;
 
     /**
      * コンストラクタ
@@ -72,10 +66,9 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
         }
         mCam.setParameters(parameters);
 
-        //parameters.setPreviewSize(optimalSize.width,optimalSize.height);
-        //mCam.setPreviewCallbackWithBuffer(this);
         // プレビュー開始
         mCam.startPreview();
+
         } catch (IOException e) {
         //
         }
@@ -100,34 +93,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
         Camera.Size optimalSize = getOptimalPreviewSize(sizes,width,height);
         parameters.setPreviewSize(optimalSize.width,optimalSize.height);
 
-//        ViewGroup.LayoutParams paramLayout;
-//        //ビューサイズをプレビューサイズに合わせる
-//        paramLayout = getLayoutParams();
-//        paramLayout.width = width;
-//        paramLayout.height = height;
-//        setLayoutParams(paramLayout);
-
-        parameters.setPreviewSize(optimalSize.width, optimalSize.height);
-
-        //色空間
-        parameters.setPreviewFormat(ImageFormat.NV21);
-        mCam.setParameters(parameters);
-
-        int bufferSize = optimalSize.width * optimalSize.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat())/8;
-
-        //プレビュー画像バッファ
-        mFrameBuffer = new byte[bufferSize];
-        //ビットマップ作成バッファ(int型で１ピクセルを表すので*4は不要)
-        mBitmapBuffer = new int[optimalSize.width * optimalSize.height];
-
-        //バッファ変更
-        mCam.addCallbackBuffer(mFrameBuffer);
-
-        //ビットマップの作成
-        mBitmap = Bitmap.createBitmap(optimalSize.width, optimalSize.height, Bitmap.Config.ARGB_8888);
-
         mCam.startPreview();
-
     }
 
     //アスペクト比を保持した最適なサイズを返す(これ以外のサイズで表示しようとすると画像が崩れる）
@@ -166,26 +132,26 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 
     public void onPreviewFrame(byte[] data, Camera camera)
     {
-        mCam.addCallbackBuffer(mFrameBuffer);
-
-        Camera.Parameters parameters = mCam.getParameters();
-        Camera.Size size = parameters.getPreviewSize();
-
-        //試しにグレースケール
-        for( int i = 0; i < mBitmapBuffer.length; i++)
-        {
-            int gray = data[i] & 0xff;
-            mBitmapBuffer[i] = 0xff000000 | gray << 16 | gray << 8 | gray;
-        }
-
-        mBitmap.setPixels( mBitmapBuffer, 0, size.width, 0, 0, size.width, size.height);
-
-        Rect srcRect = new Rect(0, 0, size.width, size.height);
-        Canvas canvas = mHolder.lockCanvas();
-        Rect dstRect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-//        canvas.drawBitmap(mBitmap, 0, 0, null);
-        canvas.drawBitmap( mBitmap, srcRect, dstRect, null);
-        mHolder.unlockCanvasAndPost(canvas);
+//        mCam.addCallbackBuffer(mFrameBuffer);
+//
+//        Camera.Parameters parameters = mCam.getParameters();
+//        Camera.Size size = parameters.getPreviewSize();
+//
+//        //試しにグレースケール
+//        for( int i = 0; i < mBitmapBuffer.length; i++)
+//        {
+//            int gray = data[i] & 0xff;
+//            mBitmapBuffer[i] = 0xff000000 | gray << 16 | gray << 8 | gray;
+//        }
+//
+//        mBitmap.setPixels( mBitmapBuffer, 0, size.width, 0, 0, size.width, size.height);
+//
+//        Rect srcRect = new Rect(0, 0, size.width, size.height);
+//        Canvas canvas = mHolder.lockCanvas();
+//        Rect dstRect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+////        canvas.drawBitmap(mBitmap, 0, 0, null);
+//        canvas.drawBitmap( mBitmap, srcRect, dstRect, null);
+//        mHolder.unlockCanvasAndPost(canvas);
     }
 
 }
