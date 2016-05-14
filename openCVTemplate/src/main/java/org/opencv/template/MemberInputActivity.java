@@ -19,9 +19,6 @@ public class MemberInputActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_input);
 
-<<<<<<< HEAD
-        startActivity(new Intent(this, NetworkConnectionActivity.class));
-=======
         /* getApplication()で自己アプリケーションクラスのインスタンスを拾う */
         ta = (TestApplication) this.getApplication();
 
@@ -40,6 +37,5 @@ public class MemberInputActivity extends Activity {
             }
         });
 
->>>>>>> master
     }
 }
