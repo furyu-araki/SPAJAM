@@ -35,10 +35,31 @@ public class CameraActivity extends Activity {
 
     private Activity mOwenerActivity;
 
+    private FirebaseHelper mFirebaseHelper;
+
+    private int mMyNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
+        mMyNumber = ta.getNumberOfMember();
+
+        mFirebaseHelper = new FirebaseHelper(this, new FirebaseHelper.OnNextDeviceBroadcastReceiver() {
+            @Override
+            public void onNextDeviceBroadcastReceive(int num) {
+                // 自分の端末の番号なら、シャッターを切る
+                if( mMyNumber == num )
+                {
+                    if (mCamera != null) {
+                        // 撮影実行
+                        mCamera.takePicture(shutterListener_, null, pictureListener_);
+                    }
+                }
+            }
+        });
 
         try {
             mCamera = Camera.open();
@@ -119,7 +140,7 @@ public class CameraActivity extends Activity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (mCamera != null) {
+                if (mCamera != null && mMyNumber == 0 ) {
                     // 撮影実行
                     mCamera.takePicture(shutterListener_, null, pictureListener_);
                 }
@@ -131,6 +152,9 @@ public class CameraActivity extends Activity {
     // シャッターが押されたときに呼ばれるコールバック
     private Camera.ShutterCallback shutterListener_ = new Camera.ShutterCallback() {
         public void onShutter() {
+            TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
+            int nextNum = mMyNumber + 1;
+            mFirebaseHelper.broadcastNextDevice(nextNum);
         }
     };
 
