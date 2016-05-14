@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnable {
 
+    private TestApplication application;
+
     private SurfaceHolder mHolder;
     private Thread mLooper;
 
@@ -28,6 +30,9 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
 
     public ParaparaSurfaceView(Context context) {
         super(context);
+
+        application = (TestApplication) context.getApplicationContext();
+
         mHolder = getHolder();
         mHolder.addCallback(this);
 
@@ -36,7 +41,7 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
         {
             String fileName = "/";
 
-            for ( int i = 1; i < 100; i++ )
+            for ( int i = 1; i < application.getMemberCount() + 1; i++ )
             {
                 String imageFileName = fileName + i + ".jpg";
 
@@ -73,8 +78,10 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
         //描画処理
         while( mLooper != null ) {
             for (Bitmap i : mImages) {
-
                 Canvas c = mHolder.lockCanvas();
+                if (c == null) {
+                    return;
+                }
 
                 Paint paint = new Paint();
                 c.drawBitmap(i, 0, 0, paint);

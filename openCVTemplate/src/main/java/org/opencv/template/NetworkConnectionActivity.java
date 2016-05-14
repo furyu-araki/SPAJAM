@@ -52,13 +52,13 @@ public class NetworkConnectionActivity extends Activity {
         createAnimationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                networkConnectionModel.downloadImage()
+                networkConnectionModel.downloadImages()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Boolean>() {
+                        .subscribe(new Action1<Integer>() {
                             @Override
-                            public void call(Boolean success) {
-                                Log.d(TAG, "download success!!");
+                            public void call(Integer count) {
+                                Log.d(TAG, "downloaded num: " + count);
                                 startActivity(new Intent(NetworkConnectionActivity.this, ResultActivity.class));
                             }
                         }, new Action1<Throwable>() {

@@ -31,6 +31,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 /**
  * Created by arakitaku on 2016/05/14.
@@ -38,10 +39,6 @@ import rx.Subscriber;
 public class NetworkConnectionModel {
 
     public static final String TAG = NetworkConnectionModel.class.getSimpleName();
-
-    public static final MediaType JPEG = MediaType.parse("image/jpeg");
-
-    public static final String DIRECTORY = Environment.getExternalStorageDirectory().getPath();
 
     private TestApplication application;
 
@@ -82,7 +79,23 @@ public class NetworkConnectionModel {
         });
     }
 
-    public Observable<Boolean> downloadImage() {
+    public Observable<Integer> downloadImages() {
+        int memberCount = application.getMemberCount();
+        return Observable.range(1, memberCount).flatMap(new Func1<Integer, Observable<Boolean>>() {
+            @Override
+            public Observable<Boolean> call(Integer imageNum) {
+                return downloadImage(imageNum);
+            }
+        }).filter(new Func1<Boolean, Boolean>() {
+            @Override
+            public Boolean call(Boolean success) {
+                return success;
+            }
+        }).count();
+
+    }
+
+    public Observable<Boolean> downloadImage(final int imageNum) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
@@ -92,7 +105,7 @@ public class NetworkConnectionModel {
                 try {
                     ResponseHeaderOverrides override = new ResponseHeaderOverrides();
                     override.setContentType("image/jpeg");
-                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), application.getPictureFileName());
+                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), imageNum + ".jpg");
                     urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
                     urlRequest.setResponseHeaders(override);
                     URL url = s3Client.generatePresignedUrl(urlRequest);
@@ -100,7 +113,7 @@ public class NetworkConnectionModel {
 
                     inputStream = getInputStream(url);
                     byte[] data = ResourceLoaderUtils.getBytesFromInputStream(inputStream);
-                    fileOutputStream = new FileOutputStream(application.getPictureFilePath());
+                    fileOutputStream = new FileOutputStream(application.DIRECTORY + "/" + imageNum + "jpg");
                     fileOutputStream.write(data);
 
                     subscriber.onNext(true);
