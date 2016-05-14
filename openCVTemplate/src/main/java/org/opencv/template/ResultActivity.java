@@ -17,6 +17,8 @@ public class ResultActivity extends Activity {
         //SurfaceViewをセットする
         LinearLayout l = new LinearLayout(this);
         setContentView(l);
+        l.addView(new ParaparaSurfaceView(this));
+
     }
 
 }
