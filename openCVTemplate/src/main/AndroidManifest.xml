@@ -5,6 +5,7 @@
           android:versionName="3.01">
 
     <application
+        android:name=".TestApplication"
         android:label="@string/app_name"
         android:icon="@drawable/icon"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
@@ -27,7 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CameraActivity" />
+        <activity android:name=".CameraActivity"
+            android:screenOrientation="landscape"/>
         <activity android:name=".NetworkConnectionActivity" />
         <activity android:name=".ResultActivity" />
     </application>
