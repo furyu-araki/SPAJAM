@@ -1,11 +1,11 @@
 package org.opencv.template;
 
 import android.app.Application;
-import android.graphics.Bitmap;
-import android.util.Log;
+import android.os.Environment;
 
 public class TestApplication extends Application {
-    private final String TAG = "DEBUG-APPLICATION";
+
+    public static final String DIRECTORY = Environment.getExternalStorageDirectory().getPath();
 
     private int memberCount_;
     private int numberOfMember_;
@@ -14,14 +14,12 @@ public class TestApplication extends Application {
 
     @Override
     public void onCreate() {
-        /** Called when the Application-class is first created. */
-        Log.v(TAG,"--- onCreate() in ---");
+        super.onCreate();
     }
 
     @Override
     public void onTerminate() {
-        /** This Method Called when this Application finished. */
-        Log.v(TAG,"--- onTerminate() in ---");
+        super.onTerminate();
     }
 
     public void setMemberCount(int memberCount)
@@ -44,4 +42,8 @@ public class TestApplication extends Application {
     public void setPictureFileName( String pictureFileName ){ pictureFileName_ = pictureFileName; }
 
     public String getPictureFileName(){ return pictureFileName_; }
+
+    public String getPictureFilePath() {
+        return DIRECTORY + "/" + getPictureFileName();
+    }
 }
