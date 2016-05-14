@@ -24,7 +24,7 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def openCVSdkDir = properties.getProperty('opencv.sdk.dir')
 
-        commandLine "$ndkDir/ndk-build",
+        commandLine "$ndkDir/ndk-build.cmd",
                 "OPENCV_ANDROID_SDK=$openCVSdkDir",
                 '-C', file('src/main/jni').absolutePath,
                 '-j', Runtime.runtime.availableProcessors(),
