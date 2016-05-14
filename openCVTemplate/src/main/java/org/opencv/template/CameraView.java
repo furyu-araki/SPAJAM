@@ -6,14 +6,19 @@ package org.opencv.template;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,6 +30,10 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     private SurfaceHolder mHolder;
 
     private Bitmap mBitmap;
+
+    public String mSavePath;
+
+    private DoSyncCameraPreview mDoySyncCameraPreview = null;
 
     /**
      * コンストラクタ
@@ -40,13 +49,28 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
+    public void savePreviewImage( String savePath )
+    {
+        mCam.stopPreview();
+        mSavePath = savePath;
+        mCam.setPreviewCallback(this);
+        mCam.startPreview();
+    }
+
+    public void setPreviewSyncCallback(DoSyncCameraPreview callback)
+    {
+        this.mDoySyncCameraPreview = callback;
+    }
+
     /**
      * SurfaceView 生成
      */
     public void surfaceCreated(SurfaceHolder holder) {
         try {
-        // カメラインスタンスに、画像表示先を設定
+         //カメラインスタンスに、画像表示先を設定
         mCam.setPreviewDisplay(holder);
+            //mCam.setPreviewCallbackWithBuffer(this);
+            //mCam.setPreviewCallback(this);
 
         Camera.Parameters parameters = mCam.getParameters();
         List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
@@ -61,9 +85,15 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
                 {
                     // ここでpreSizとpicSizが同一の比率と判定できます
                     parameters.setPreviewSize(preSiz.width, preSiz.height);
+//                    int bufferSize = preSiz.width * preSiz.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat())/8;
+//                    mFrameBuffer = new byte[bufferSize];
+//
+//                    //バッファ変更
+//                    mCam.addCallbackBuffer(mFrameBuffer);
                 }
             }
         }
+
         mCam.setParameters(parameters);
 
         // プレビュー開始
@@ -132,6 +162,27 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 
     public void onPreviewFrame(byte[] data, Camera camera)
     {
+        Log.d( "camera", "onPreviewFrame");
+        mCam.stopPreview();
+        mCam.setPreviewCallback(null);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mSavePath);
+            int previewWidth = camera.getParameters().getPreviewSize().width;
+            int previewHeight = camera.getParameters().getPreviewSize().height;
+            Bitmap previewBmp = getBitmapImageFromYUV(data,previewWidth, previewHeight);
+            previewBmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            //fos.write(data);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mDoySyncCameraPreview.onSaveFinished();
+
+//スタートさせない
+        //mCam.startPreview();
+
+
 //        mCam.addCallbackBuffer(mFrameBuffer);
 //
 //        Camera.Parameters parameters = mCam.getParameters();
@@ -152,6 +203,17 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 ////        canvas.drawBitmap(mBitmap, 0, 0, null);
 //        canvas.drawBitmap( mBitmap, srcRect, dstRect, null);
 //        mHolder.unlockCanvasAndPost(canvas);
+    }
+
+    public Bitmap getBitmapImageFromYUV(byte[] data, int width, int height) {
+        YuvImage yuvimage = new YuvImage(data, ImageFormat.NV21, width, height, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        yuvimage.compressToJpeg(new Rect(0, 0, width, height), 80, baos);
+        byte[] jdata = baos.toByteArray();
+        BitmapFactory.Options bitmapFatoryOptions = new BitmapFactory.Options();
+        bitmapFatoryOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length, bitmapFatoryOptions);
+        return bmp;
     }
 
 }
