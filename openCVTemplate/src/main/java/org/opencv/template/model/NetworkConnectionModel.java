@@ -16,6 +16,7 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Downloader;
 
 import org.opencv.template.Constants;
+import org.opencv.template.TestApplication;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +39,9 @@ public class NetworkConnectionModel {
 
     public static final MediaType JPEG = MediaType.parse("image/jpeg");
 
-    public static final String DIRECTORY = Environment.getExternalStorageDirectory() + "/spajam";
+    public static final String DIRECTORY = Environment.getExternalStorageDirectory().getPath();
+
+    private TestApplication application;
 
     private OkHttpClient client;
     private OkHttp3Downloader downloader;
@@ -47,6 +50,7 @@ public class NetworkConnectionModel {
 
 
     public NetworkConnectionModel(Context context) {
+        application = (TestApplication) context.getApplicationContext();
         File file = new File(DIRECTORY);
         Log.d(TAG, "mkdir: " + file.mkdir());
         client = new OkHttpClient();
@@ -61,7 +65,7 @@ public class NetworkConnectionModel {
             public void call(Subscriber<? super Boolean> subscriber) {
                 try {
                     s3Client.createBucket(Constants.getPictureBucket());
-                    PutObjectRequest por = new PutObjectRequest(Constants.getPictureBucket(), "image0.jpg", new File(DIRECTORY + "/image0.jpg"));
+                    PutObjectRequest por = new PutObjectRequest(Constants.getPictureBucket(), "camera_test.jpg", new File(application.getPictureFileName()));
                     s3Client.putObject(por);
                     subscriber.onNext(true);
                 } catch (Exception e) {
@@ -81,7 +85,7 @@ public class NetworkConnectionModel {
                 try {
                     ResponseHeaderOverrides override = new ResponseHeaderOverrides();
                     override.setContentType("image/jpeg");
-                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), "image0.jpg");
+                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), "camera_test.jpg");
                     urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
                     urlRequest.setResponseHeaders(override);
                     URL url = s3Client.generatePresignedUrl(urlRequest);
@@ -89,7 +93,7 @@ public class NetworkConnectionModel {
 
                     inputStream = getInputStream(url);
                     byte[] data = ResourceLoaderUtils.getBytesFromInputStream(inputStream);
-                    fileOutputStream = new FileOutputStream(DIRECTORY + "/image_download0.jpg");
+                    fileOutputStream = new FileOutputStream(application.getPictureFileName());
                     fileOutputStream.write(data);
 
                     subscriber.onNext(true);
