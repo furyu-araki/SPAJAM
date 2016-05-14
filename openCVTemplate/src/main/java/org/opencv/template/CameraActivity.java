@@ -44,6 +44,8 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        mOwenerActivity = this;
+
         TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
         mMyNumber = ta.getNumberOfMember();
 
@@ -91,7 +93,6 @@ public class CameraActivity extends Activity {
         // タッチリスナー設定
         mCameraView.setOnTouchListener( ontouchListener_ );
 
-        mOwenerActivity = this;
     }
 
     @Override
@@ -140,7 +141,7 @@ public class CameraActivity extends Activity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (mCamera != null && mMyNumber == 0 ) {
+                if (mCamera != null && mMyNumber == 1 ) {
                     // 撮影実行
                     mCamera.takePicture(shutterListener_, null, pictureListener_);
                 }
