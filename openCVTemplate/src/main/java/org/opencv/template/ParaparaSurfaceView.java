@@ -81,7 +81,7 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
                     return;
                 }
 
-                Bitmap bitmap = Bitmap.createScaledBitmap(i, 1920, 1440, false);
+                Bitmap bitmap = Bitmap.createScaledBitmap(i, 960, 720, false);
                 Paint paint = new Paint();
                 c.drawBitmap(bitmap, 0, 0, paint);
 
