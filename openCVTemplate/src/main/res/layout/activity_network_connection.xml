@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/text_01"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/activity_network_connection_imageview_complete"
@@ -25,26 +25,24 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/text_02"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <Button
+    <ImageView
         android:id="@+id/activity_network_connection_button_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
         android:padding="10dp"
-        android:text="アニメーション作成"
-        android:visibility="visible" />
+        android:src="@drawable/start"
+        android:visibility="gone" />
 
-    <Button
+    <ImageView
         android:id="@+id/activity_network_connection_button_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
         android:padding="10dp"
-        android:text="アニメーションを見る"
+        android:src="@drawable/next"
         android:visibility="gone" />
 
 </FrameLayout>

@@ -24,8 +24,8 @@ public class NetworkConnectionActivity extends Activity {
 
     NetworkConnectionModel networkConnectionModel;
 
-    Button createAnimationButton;
-    Button resultButton;
+    View createAnimationButton;
+    View resultButton;
     ImageView creatingImageView;
     ImageView completeImageView;
 
@@ -37,8 +37,8 @@ public class NetworkConnectionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network_connection);
 
-        createAnimationButton = (Button) findViewById(R.id.activity_network_connection_button_create);
-        resultButton = (Button) findViewById(R.id.activity_network_connection_button_result);
+        createAnimationButton = findViewById(R.id.activity_network_connection_button_create);
+        resultButton = findViewById(R.id.activity_network_connection_button_result);
         creatingImageView = (ImageView) findViewById(R.id.activity_network_connection_imageview_creating);
         completeImageView = (ImageView) findViewById(R.id.activity_network_connection_imageview_complete);
 
