@@ -20,6 +20,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -115,7 +116,9 @@ public class CameraActivity extends Activity {
         preview.addView( mCameraView, params);
 
         // タッチリスナー設定
-        mCameraView.setOnTouchListener( ontouchListener_ );
+        ImageView imageView = (ImageView)findViewById(R.id.bulleteImage);
+        imageView.setOnTouchListener(ontouchListener_);
+        //mCameraView.setOnTouchListener( ontouchListener_ );
 
     }
 
