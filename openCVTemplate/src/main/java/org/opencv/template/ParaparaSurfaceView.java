@@ -1,16 +1,14 @@
 package org.opencv.template;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Environment;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
-
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.view.SurfaceView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,8 +81,9 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
                     return;
                 }
 
+                Bitmap bitmap = Bitmap.createScaledBitmap(i, 1920, 1440, false);
                 Paint paint = new Paint();
-                c.drawBitmap(i, 0, 0, paint);
+                c.drawBitmap(bitmap, 0, 0, paint);
 
                 mHolder.unlockCanvasAndPost(c);
 
