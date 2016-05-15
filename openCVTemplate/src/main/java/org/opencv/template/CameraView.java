@@ -107,8 +107,8 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
     /**
      * SurfaceView 破棄
      */
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        mCam.setPreviewCallback(null);
+    public void surfaceDestroyed(SurfaceHolder holder)
+    {
     }
 
     /**
@@ -162,7 +162,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 
     public void onPreviewFrame(byte[] data, Camera camera)
     {
-        Log.d( "camera", "onPreviewFrame");
         mCam.stopPreview();
         mCam.setPreviewCallback(null);
         FileOutputStream fos = null;
