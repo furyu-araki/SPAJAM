@@ -15,12 +15,31 @@
 
         <Space android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.75"/>
+            android:layout_weight="0.05"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.35"
+            android:src="@drawable/logo" />
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.26"
+            android:src="@drawable/hito" />
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02"/>
         <ImageView
             android:id="@+id/activity_title_imageview_start"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.25"
-            android:src="@drawable/start_btn" />
+            android:layout_weight="0.22"
+            android:src="@drawable/start" />
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.03"/>
     </LinearLayout>
 </FrameLayout>
