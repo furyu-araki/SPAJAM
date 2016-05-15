@@ -54,16 +54,33 @@
 
     <Space android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.16"/>
+        android:layout_weight="0.06"/>
 
-    <Button android:id="@+id/button"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:text="次へ" />
+        android:layout_weight="0.22">
+        <Space android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.25" />
+
+        <ImageButton android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:src="@drawable/start_btn"
+            android:scaleType="fitXY"
+            android:text="次へ" />
+
+        <Space android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.25" />
+    </LinearLayout>
 
     <Space android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1"/>
+        android:layout_weight="0.04"/>
 
 </LinearLayout>
