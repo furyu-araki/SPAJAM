@@ -59,7 +59,7 @@ public class CameraActivity extends Activity {
             @Override
             public void onNextDeviceBroadcastReceive(int num) {
                 // 自分の端末の番号なら、シャッターを切る
-                //if( mMyNumber == num )
+                if( mMyNumber != 1 )
                 {
                     if (mCamera != null) {
                         TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
@@ -67,7 +67,10 @@ public class CameraActivity extends Activity {
                         //mFirebaseHelper.broadcastNextDevice(nextNum);
 
                         // 撮影実行
-                        mCamera.takePicture(shutterListener_, null, pictureListener_);
+                       // mCamera.takePicture(shutterListener_, null, pictureListener_);
+                       // mCameraView.savePreviewImage(savePath);
+                        saveCameraImage();
+
                     }
                 }
             }
@@ -105,7 +108,9 @@ public class CameraActivity extends Activity {
             size.x = size.y / 3 * 4;
         }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size.x, size.y);
-        params.gravity = Gravity.CENTER_VERTICAL;
+//        params.gravity = Gravity.TOP|Gravity.LEFT;
+//        params.leftMargin = 10;
+//        params.topMargin = 10;
         mCameraView.setLayoutParams(params);
         preview.addView( mCameraView, params);
 
@@ -127,8 +132,11 @@ public class CameraActivity extends Activity {
     {
         super.onPause();
         mSoundPool.release();
-        //mCamera.release();
-        //mCamera = null;
+        if(mCamera != null ) {
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     // ディスプレイの向き設定
@@ -164,6 +172,23 @@ public class CameraActivity extends Activity {
         // ディスプレイの向き設定
         mCamera.setDisplayOrientation(result);
     }
+    public void saveCameraImage()
+    {
+        TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
+
+        //プレビュー画像を保存する場合
+        String directory = Environment.getExternalStorageDirectory().getPath();
+
+        String fileName =  ta.getNumberOfMember() + ".jpg";
+        String savePath = directory + "/" + fileName;
+
+        mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
+
+        ta.setPictureFileName(fileName);
+
+        mCameraView.savePreviewImage(savePath);
+
+    }
     // 画面タッチ時のコールバック
     View.OnTouchListener ontouchListener_ = new View.OnTouchListener() {
         @Override
@@ -177,17 +202,7 @@ public class CameraActivity extends Activity {
                     // 撮影実行
                     //mCamera.takePicture(shutterListener_, null, pictureListener_);
 
-                    //プレビュー画像を保存する場合
-                    String directory = Environment.getExternalStorageDirectory().getPath();
-
-                    String fileName =  ta.getNumberOfMember() + ".jpg";
-                    String savePath = directory + "/" + fileName;
-
-                    mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
-
-                    ta.setPictureFileName(fileName);
-
-                    mCameraView.savePreviewImage(savePath);
+                    saveCameraImage();
 
                 }
             }
