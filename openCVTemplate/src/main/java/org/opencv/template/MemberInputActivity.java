@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 /**
  * Created by arakitaku on 2016/05/14.
@@ -22,7 +23,7 @@ public class MemberInputActivity extends Activity {
         /* getApplication()で自己アプリケーションクラスのインスタンスを拾う */
         ta = (TestApplication) this.getApplication();
 
-        Button button = (Button) findViewById(R.id.button);
+        ImageButton button = (ImageButton) findViewById(R.id.button);
         // ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
         button.setOnClickListener(new View.OnClickListener() {
             @Override
