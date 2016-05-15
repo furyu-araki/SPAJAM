@@ -24,9 +24,10 @@ public class NetworkConnectionActivity extends Activity {
 
     NetworkConnectionModel networkConnectionModel;
 
-    ImageView imageView;
     Button createAnimationButton;
     Button resultButton;
+    ImageView creatingImageView;
+    ImageView completeImageView;
 
     ProgressDialog progressDialog;
 
@@ -36,9 +37,10 @@ public class NetworkConnectionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network_connection);
 
-        imageView = (ImageView) findViewById(R.id.activity_network_connection_imageview);
         createAnimationButton = (Button) findViewById(R.id.activity_network_connection_button_create);
         resultButton = (Button) findViewById(R.id.activity_network_connection_button_result);
+        creatingImageView = (ImageView) findViewById(R.id.activity_network_connection_imageview_creating);
+        completeImageView = (ImageView) findViewById(R.id.activity_network_connection_imageview_complete);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("画像のアップロード中です。");
@@ -64,7 +66,7 @@ public class NetworkConnectionActivity extends Activity {
         createAnimationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.setImageResource(R.drawable.create_progress);
+                creatingImageView.setVisibility(View.VISIBLE);
                 networkConnectionModel.downloadImages()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -72,7 +74,8 @@ public class NetworkConnectionActivity extends Activity {
                             @Override
                             public void call(Integer count) {
                                 Log.d(TAG, "downloaded num: " + count);
-                                imageView.setImageResource(R.drawable.create_comprete);
+                                creatingImageView.setVisibility(View.GONE);
+                                completeImageView.setVisibility(View.VISIBLE);
                                 createAnimationButton.setVisibility(View.GONE);
                                 resultButton.setVisibility(View.VISIBLE);
                             }

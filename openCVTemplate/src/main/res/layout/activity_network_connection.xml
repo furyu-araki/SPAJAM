@@ -9,21 +9,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/holo_blue_light" />
+        android:background="@drawable/processing_bk" />
+
+    <ImageView
+        android:id="@+id/activity_network_connection_imageview_creating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/text_01"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/activity_network_connection_imageview_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/text_02"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/activity_network_connection_button_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:padding="10dp"
         android:text="アニメーション作成"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/activity_network_connection_button_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:padding="10dp"
         android:text="アニメーションを見る"
         android:visibility="gone" />
 
