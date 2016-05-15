@@ -1,86 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@drawable/member_input_background"
-    android:layout_height="match_parent">
-
-    <Space android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.07">
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
-        <EditText android:id="@+id/edittext"
-            android:text="1"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.5"
-            android:inputType="numberDecimal"
-            android:singleLine="true"
-            />
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
-    </LinearLayout>
-
-    <Space android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/member_input_background"
+        android:scaleType="fitXY"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.07">
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
-        <EditText android:id="@+id/edittext2"
-            android:text="1"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.5"
-            android:inputType="numberDecimal"
-            android:singleLine="true"
-            />
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07">
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+            <EditText android:id="@+id/edittext"
+                android:text="1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                />
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07">
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+            <EditText android:id="@+id/edittext2"
+                android:text="1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                />
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.06"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.22">
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+
+            <ImageButton android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:src="@drawable/start_btn"
+                android:scaleType="fitXY"
+                android:text="次へ" />
+
+            <Space android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.25" />
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.08"/>
+
     </LinearLayout>
-
-    <Space android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.06"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.22">
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
-
-        <ImageButton android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:adjustViewBounds="true"
-            android:background="@null"
-            android:src="@drawable/start_btn"
-            android:scaleType="fitXY"
-            android:text="次へ" />
-
-        <Space android:layout_height="fill_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.25" />
-    </LinearLayout>
-
-    <Space android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.08"/>
-
-</LinearLayout>
+</FrameLayout>
