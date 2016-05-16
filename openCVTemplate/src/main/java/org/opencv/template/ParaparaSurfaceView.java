@@ -34,7 +34,7 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
         mHolder = getHolder();
         mHolder.addCallback(this);
 
-        File dir = new File(Environment.getExternalStorageDirectory().getPath());
+        File dir = new File(application.DIRECTORY);
         if(dir.exists())
         {
             String fileName = "/";
@@ -43,7 +43,7 @@ public class ParaparaSurfaceView extends SurfaceView implements Callback, Runnab
             {
                 String imageFileName = fileName + i + ".jpg";
 
-                File file = new File(dir.getAbsolutePath() + imageFileName);
+                File file = new File(application.DIRECTORY + imageFileName);
                 if (file.exists())
                 {
                     mImages.add(BitmapFactory.decodeFile(file.getPath()));

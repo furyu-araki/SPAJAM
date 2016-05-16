@@ -175,15 +175,15 @@ public class CameraActivity extends Activity {
         // ディスプレイの向き設定
         mCamera.setDisplayOrientation(result);
     }
+
+    /**
+     * プレビュー画像を保存する
+     */
     public void saveCameraImage()
     {
         TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
-
-        //プレビュー画像を保存する場合
-        String directory = Environment.getExternalStorageDirectory().getPath();
-
         String fileName =  ta.getNumberOfMember() + ".jpg";
-        String savePath = directory + "/" + fileName;
+        String savePath = ta.DIRECTORY + "/" + fileName;
 
         mSoundPool.play(mSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
 
@@ -258,11 +258,10 @@ public class CameraActivity extends Activity {
 
                 FileOutputStream fos = null;
                 try {
-                    String directory = Environment.getExternalStorageDirectory().getPath();
                     TestApplication ta = (TestApplication) mOwenerActivity.getApplication();
 
                     String fileName =  ta.getNumberOfMember() + ".jpg";
-                    String savePath = directory + "/" + fileName;
+                    String savePath = ta.DIRECTORY + "/" + fileName;
 
                     fos = new FileOutputStream(savePath);
                     rotated.compress(Bitmap.CompressFormat.JPEG, 100, fos);

@@ -3,9 +3,11 @@ package org.opencv.template;
 import android.app.Application;
 import android.os.Environment;
 
+import java.io.File;
+
 public class TestApplication extends Application {
 
-    public static final String DIRECTORY = Environment.getExternalStorageDirectory().getPath();
+    public static final String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/SuperBulletTime";
 
     private int memberCount_;
     private int numberOfMember_;
@@ -15,6 +17,9 @@ public class TestApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        File directory = new File(DIRECTORY);
+        directory.mkdir();
     }
 
     @Override
