@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Downloader;
 
+import org.opencv.template.BuildConfig;
 import org.opencv.template.Constants;
 import org.opencv.template.TestApplication;
 
@@ -52,7 +53,7 @@ public class NetworkConnectionModel {
         application = (TestApplication) context.getApplicationContext();
         client = new OkHttpClient();
         downloader = new OkHttp3Downloader(client);
-        s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.ACCESS_KEY_ID, Constants.SECRET_KEY));
+        s3Client = new AmazonS3Client(new BasicAWSCredentials(BuildConfig.AWS_ACCESS_KEY_ID, BuildConfig.AWS_SECRET_KEY_ID));
         s3Client.setRegion(Region.getRegion(Regions.US_WEST_2));
     }
 
@@ -61,12 +62,12 @@ public class NetworkConnectionModel {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 try {
-                    if (isExistBucket(Constants.getPictureBucket()) == false) {
-                        s3Client.createBucket(Constants.getPictureBucket());
+                    if (isExistBucket(Constants.AWS_S3_PICTURE_BUCKET) == false) {
+                        s3Client.createBucket(Constants.AWS_S3_PICTURE_BUCKET);
                     }
                     Log.d("fileName", application.getPictureFileName());
                     PutObjectRequest por = new PutObjectRequest(
-                            Constants.getPictureBucket(),
+                            Constants.AWS_S3_PICTURE_BUCKET,
                             application.getPictureFileName(),
                             new File(application.getPictureFilePath())
                     );
@@ -105,7 +106,7 @@ public class NetworkConnectionModel {
                 try {
                     ResponseHeaderOverrides override = new ResponseHeaderOverrides();
                     override.setContentType("image/jpeg");
-                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.getPictureBucket(), imageNum + ".jpg");
+                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(Constants.AWS_S3_PICTURE_BUCKET, imageNum + ".jpg");
                     urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));
                     urlRequest.setResponseHeaders(override);
                     URL url = s3Client.generatePresignedUrl(urlRequest);

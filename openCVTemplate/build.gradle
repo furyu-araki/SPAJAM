@@ -8,6 +8,9 @@ android {
         applicationId "org.opencv.template"
         minSdkVersion 15
         targetSdkVersion 22
+
+        buildConfigField "String", "AWS_ACCESS_KEY_ID", "${awsAccessKeyId}"
+        buildConfigField "String", "AWS_SECRET_KEY_ID", "${awsSecretKeyId}"
     }
 
     sourceSets.main {
